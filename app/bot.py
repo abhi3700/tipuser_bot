@@ -41,7 +41,7 @@ def withdraw_command(chat, message, args):
 def withdrawmemo_command(chat, message, args):
     """
         Withdraw your EOSIO token from this bot to your EOSIO account with a memo
-        NOTE: Please don't use 'space' in between words in `memo`. Instead, use 'hyphen', etc.
+        NOTE: Please don't use 'space' in between words in `memo`. Instead, use 'underscore', 'hyphen', etc.
         
         Demo:
         =====
@@ -53,14 +53,14 @@ def withdrawmemo_command(chat, message, args):
     if len(args) == 4:
         chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}\narg3: {args[3]}")        # for testing
     else:
-        chat.send("Please enter withdrawal request (with memo) in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /withdrawmemo tipuser11111 1.0000 EOS pay_bill)")
+        chat.send("Please enter withdrawal request (with memo) in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /withdrawmemo tipuser11111 1.0000 EOS pay_bill)", syntax="plain")
 
 # ===================================================command: /tip===========================================================================
 @bot.command("tip")
 def tip_command(chat, message, args):
     """
         Tip your EOSIO token from this bot to a user (with telegram id) along with a memo
-        NOTE: Please don't use 'space' in between words in `memo`. Instead, use 'hyphen', etc.
+        NOTE: Please don't use 'space' in between words in `memo`. Instead, use 'underscore', 'hyphen', etc.
         
         Demo:
         =====
@@ -72,7 +72,7 @@ def tip_command(chat, message, args):
     if len(args) == 4:
         chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}\narg3: {args[3]}")        # for testing
     else:
-        chat.send("Please enter tip request (with memo) in this format: /tip RECEIVER-ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /tip tipuser11112 0.1000 EOS restaurant-tip-for-excellent-service)")
+        chat.send("Please enter tip request (with memo) in this format: /tip RECEIVER_ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /tip tipuser11112 0.1000 EOS restaurant_tip_for_excellent_service)", syntax="plain")
 
 
 # ================================================MAIN===========================================================================
