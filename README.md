@@ -2,7 +2,7 @@
 A Telegram Bot for tipping user using an EOSIO blockchain.
 
 ## Features
-* deposit fund to the bot's eosio account with any memo, from outside chat interface via blockchain.
+* [x] deposit fund to the bot's eosio account with any memo, from outside chat interface via blockchain.
 	- [NOT Recommended] basically into tip eosio account tippertipper from outside (i.e. telegram chat) by mentioning a memo as "deposit fund"
 	- here, `/deposit` is to show the message like this:
 ```
@@ -22,7 +22,7 @@ Please enter withdrawal request in this format: /withdraw ACCOUNT AMOUNT SYMBOL 
 ```
 Please enter withdrawal request in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL MEMO (e.g. /withdraw eosio 1.0000 EOS MEMO)
 ```
-* `/tip (receiver_ac, qty, memo)`: give receiver's eosio account (say `tipuser11112`) so that the amount can be transferred from user's fund to an receiver account with a custom msg.
+* [ ] `/tip (receiver_ac, qty, memo)`: give receiver's eosio account (say `tipuser11112`) so that the amount can be transferred from user's fund to an receiver account with a custom msg.
 	- token transfer happens using `cleoswt push action eosio.token transfer '["tippertipper", "tipuser11112", "2.0000 EOS", "transfer 2 EOS as per the request"]' -p tippertipper@systemkey`
 
 ## Coding

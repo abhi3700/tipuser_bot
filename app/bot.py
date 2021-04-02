@@ -13,27 +13,67 @@ bot.owner = "@abhi3700"
 # define Redis database
 # r = redis.from_url(REDIS_URL)
 
-# ===================================================Share telegram_id===========================================================================
+# ===================================================command: /deposit===========================================================================
 @bot.command("deposit")
 def deposit_command(chat, message, args):
-    """Please share your telegram id. Also Get it from @userinfobot"""
-    chat.send("Send token to tippedtipped with your unique telegram ID {chat_id} as the memo to deposit!".format(chat_id=chat.id))
+    """Deposit your EOSIO token to this bot by telegram ID as memo"""
+    chat.send(f"Send token to \'{tip_eosio_ac}\' with your unique telegram ID - {chat.id} as the memo to deposit!")
 
-# ===================================================remove keyboard(s)=================================================================
-# @bot.command("removekeyboard")
-# def removekeyboard_command(chat, message):
-#     """removes the keyboard appearing below"""
-#     bot.api.call('sendMessage', {
-#         'chat_id': chat.id,
-#         'reply_to_message': message.id,
-#         'text': 'keyboards removed.',
-#         'reply_markup': json.dumps({
-#             'remove_keyboard': True,
-#             # This 1 parameter below is optional
-#             # See https://core.telegram.org/bots/api#replykeyboardremove
-#             'selective': True,
-#         })
-#     })
+# ===================================================command: /withdraw===========================================================================
+@bot.command("withdraw")
+def withdraw_command(chat, message, args):
+    """
+        Withdraw your EOSIO token from this bot to your EOSIO account
+        Demo:
+        =====
+        User: 
+            /withdraw tipuser11111 1.0000 EOS
+        Bot:
+            DONE!
+    """
+    if len(args) == 3:
+        chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}")        # for testing
+    else:
+        chat.send("Please enter withdrawal request in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL \n(e.g. /withdraw tipuser11111 1.0000 EOS)")
+
+# ===================================================command: /withdrawmemo===========================================================================
+@bot.command("withdrawmemo")
+def withdrawmemo_command(chat, message, args):
+    """
+        Withdraw your EOSIO token from this bot to your EOSIO account with a memo
+        NOTE: Please don't use 'space' in between words in `memo`. Instead, use 'hyphen', etc.
+        
+        Demo:
+        =====
+        User: 
+            /withdrawmemo tipuser11111 1.0000 EOS pay-bill
+        Bot:
+            DONE!
+    """
+    if len(args) == 4:
+        chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}\narg3: {args[3]}")        # for testing
+    else:
+        chat.send("Please enter withdrawal request (with memo) in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /withdrawmemo tipuser11111 1.0000 EOS pay_bill)")
+
+# ===================================================command: /tip===========================================================================
+@bot.command("tip")
+def tip_command(chat, message, args):
+    """
+        Tip your EOSIO token from this bot to a user (with telegram id) along with a memo
+        NOTE: Please don't use 'space' in between words in `memo`. Instead, use 'hyphen', etc.
+        
+        Demo:
+        =====
+        User: 
+            /tip tipuser11112 0.1000 EOS restaurant-tip-for-excellent-service
+        Bot:
+            DONE!
+    """
+    if len(args) == 4:
+        chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}\narg3: {args[3]}")        # for testing
+    else:
+        chat.send("Please enter tip request (with memo) in this format: /tip RECEIVER-ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /tip tipuser11112 0.1000 EOS restaurant-tip-for-excellent-service)")
+
 
 # ================================================MAIN===========================================================================
 if __name__ == "__main__":

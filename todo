@@ -1,0 +1,3 @@
+Additional features
+- token precision detection: if precision of token amount is not maintained => refer to the /tokenguide command.
+- custom key generation for contract security: instead of using active, owner permission for pushing txn from inside the bot, it is recommended to add a custom key (say 'botperm') for using it in the bot codebase (uploaded into app server, github). This key can be changed at any time using owner permission.
