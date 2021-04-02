@@ -25,7 +25,7 @@ Please enter withdrawal request in this format: /withdrawmemo ACCOUNT AMOUNT SYM
 * [ ] `/tip (receiver_ac, qty, memo)`: give receiver's eosio account (say `tipuser11112`) so that the amount can be transferred from user's fund to an receiver account with a custom msg.
 	- token transfer happens using `cleoswt push action eosio.token transfer '["tippertipper", "tipuser11112", "2.0000 EOS", "transfer 2 EOS as per the request"]' -p tippertipper@systemkey`
 ```console
-Please enter tip request (with memo) in this format: /tip RECEIVER_ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /tip tipuser11112 0.1000 EOS restaurant_tip_for_excellent_service)
+Please enter tip request (with memo) in this format: /tip RECEIVER_ID AMOUNT SYMBOL MEMO \n(e.g. /tip 768743431 0.1000 EOS restaurant_tip_for_excellent_service
 ```
 
 ## Coding
