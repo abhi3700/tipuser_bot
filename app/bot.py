@@ -30,53 +30,54 @@ async def withdraw(
 		from_username,
 		to_ac,
 		quantity,
-		memo
+		memo,
+		chat
 	):
-    contract_account = EosAccount(
-      name=tip_eosio_ac,
-      private_key=tip_ac_private_key
-    )
+	contract_account = EosAccount(
+	  name=tip_eosio_ac,
+	  private_key=tip_ac_private_key
+	)
 
-    action = types.EosAction(
-        account=tip_eosio_ac,
-        name=withdraw_action,
-        authorization=[contract_account.authorization(tip_ac_key_perm)],
-        data={
-            'from_id': from_id,
-            'from_username': from_username,
-            'to_ac': to_ac,
-            'quantity': quantity,
-            'memo': memo
-        }
-    )
+	action = types.EosAction(
+		account=tip_eosio_ac,
+		name=withdraw_action,
+		authorization=[contract_account.authorization(tip_ac_key_perm)],
+		data={
+			'from_id': from_id,
+			'from_username': from_username,
+			'to_ac': to_ac,
+			'quantity': quantity,
+			'memo': memo
+		}
+	)
 
-    rpc = EosJsonRpc(url=Chain_URL)
-    block = await rpc.get_head_block()
+	rpc = EosJsonRpc(url=Chain_URL)
+	block = await rpc.get_head_block()
 
-    transaction = EosTransaction(
-      ref_block_num=block['block_num'] & 65535,
-      ref_block_prefix=block['ref_block_prefix'],
-      actions=[action]
-    )
+	transaction = EosTransaction(
+	  ref_block_num=block['block_num'] & 65535,
+	  ref_block_prefix=block['ref_block_prefix'],
+	  actions=[action]
+	)
 
-    response = await rpc.sign_and_push_transaction(
-      transaction, keys=[contract_account.key]
-    )
-    # chat.send(f'{response}')             # print the full response after SUCCESS
-    
-    response = str(response).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
-    # print(response)               # print the full response after replacing single with double quotes
-    '''
-        Here, as the response o/p is not a valid JSON giving error like this:
-        Error:
-            Parse error on line 1:
-            ...producer_block_id": None, "receipt": {"s
-            -----------------------^
-            Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'
+	response = await rpc.sign_and_push_transaction(
+	  transaction, keys=[contract_account.key]
+	)
+	# chat.send(f'{response}')             # print the full response after SUCCESS
+	
+	response = str(response).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
+	# print(response)               # print the full response after replacing single with double quotes
+	'''
+		Here, as the response o/p is not a valid JSON giving error like this:
+		Error:
+			Parse error on line 1:
+			...producer_block_id": None, "receipt": {"s
+			-----------------------^
+			Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'
 
-        So, capture txn_id by char no. i.e. {"transaction_id": "14e310c6e296560202ec808139d7e1b06901616f35b5c4a36ee0a4f065ec72a6"
-    '''
-    chat.send(f"\nView the transaction here: https://bloks.io/transaction/{response[20:84]}") if chain_type== "eos-mainnet" else chat.send(f"\nView the transaction here: https://{chain_name}.bloks.io/transaction/{response[20:84]}")          # print the txn_id for successful transaction
+		So, capture txn_id by char no. i.e. {"transaction_id": "14e310c6e296560202ec808139d7e1b06901616f35b5c4a36ee0a4f065ec72a6"
+	'''
+	chat.send(f"\nView the transaction here: https://bloks.io/transaction/{response[20:84]}") if chain_type== "eos-mainnet" else chat.send(f"\nView the transaction here: https://{chain_name}.bloks.io/transaction/{response[20:84]}")          # print the txn_id for successful transaction
 
 # ===================================================func for tip ACTION===================================================================
 async def tip(
@@ -85,54 +86,56 @@ async def tip(
 		from_username,
 		to_username,
 		quantity,
-		memo
+		memo,
+		chat
 	):
-    contract_account = EosAccount(
-      name=tip_eosio_ac,
-      private_key=tip_ac_private_key
-    )
+	contract_account = EosAccount(
+	  name=tip_eosio_ac,
+	  private_key=tip_ac_private_key
+	)
 
-    action = types.EosAction(
-        account=tip_eosio_ac,
-        name=tip_action,
-        authorization=[contract_account.authorization(tip_ac_key_perm)],
-        data={
-            'from_id': from_id,
-            'to_id': to_id,
-            'from_username': from_username,
-            'to_username': to_username,
-            'quantity': quantity,
-            'memo': memo
-        }
-    )
+	action = types.EosAction(
+		account=tip_eosio_ac,
+		name=tip_action,
+		authorization=[contract_account.authorization(tip_ac_key_perm)],
+		data={
+			'from_id': from_id,
+			'to_id': to_id,
+			'from_username': from_username,
+			'to_username': to_username,
+			'quantity': quantity,
+			'memo': memo
+		}
+	)
 
-    rpc = EosJsonRpc(url=Chain_URL)
-    block = await rpc.get_head_block()
+	rpc = EosJsonRpc(url=Chain_URL)
+	block = await rpc.get_head_block()
 
-    transaction = EosTransaction(
-      ref_block_num=block['block_num'] & 65535,
-      ref_block_prefix=block['ref_block_prefix'],
-      actions=[action]
-    )
+	transaction = EosTransaction(
+	  ref_block_num=block['block_num'] & 65535,
+	  ref_block_prefix=block['ref_block_prefix'],
+	  actions=[action]
+	)
 
-    response = await rpc.sign_and_push_transaction(
-      transaction, keys=[contract_account.key]
-    )
-    # chat.send(f'{response}')             # print the full response after SUCCESS
-    
-    response = str(response).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
-    # print(response)               # print the full response after replacing single with double quotes
-    '''
-        Here, as the response o/p is not a valid JSON giving error like this:
-        Error:
-            Parse error on line 1:
-            ...producer_block_id": None, "receipt": {"s
-            -----------------------^
-            Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'
+	response = await rpc.sign_and_push_transaction(
+	  transaction, keys=[contract_account.key]
+	)
+	# chat.send(f'{response}')             # print the full response after SUCCESS
+	
+	response = str(response).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
+	# print(response)               # print the full response after replacing single with double quotes
+	'''
+		Here, as the response o/p is not a valid JSON giving error like this:
+		Error:
+			Parse error on line 1:
+			...producer_block_id": None, "receipt": {"s
+			-----------------------^
+			Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'
 
-        So, capture txn_id by char no. i.e. {"transaction_id": "14e310c6e296560202ec808139d7e1b06901616f35b5c4a36ee0a4f065ec72a6"
-    '''
-    chat.send(f"\nView the transaction here: https://bloks.io/transaction/{response[20:84]}") if chain_type== "eos-mainnet" else chat.send(f"\nView the transaction here: https://{chain_name}.bloks.io/transaction/{response[20:84]}")          # print the txn_id for successful transaction
+		So, capture txn_id by char no. i.e. {"transaction_id": "14e310c6e296560202ec808139d7e1b06901616f35b5c4a36ee0a4f065ec72a6"
+	'''
+	return response
+	chat.send(f"\nView the transaction here: https://bloks.io/transaction/{response[20:84]}") if chain_type== "eos-mainnet" else chat.send(f"\nView the transaction here: https://{chain_name}.bloks.io/transaction/{response[20:84]}")          # print the txn_id for successful transaction
 
 
 # ===================================================command: /deposit===========================================================================
@@ -157,14 +160,14 @@ def withdraw_command(chat, message, args):
 		# chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}")        # for testing
 		try:
 			# push txn
-		    asyncio.get_event_loop().run_until_complete(withdraw(chat.id, message.sender.username, args[0], args[1] + " " + args[2], ""))
+			asyncio.get_event_loop().run_until_complete(withdraw(chat.id, message.sender.username, args[0], args[1] + " " + args[2], "", chat))
 
 		except EosAccountDoesntExistException:
 			chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
 			e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
-			chat.send(f"{str(e)}", syntax="plain")      # print full error dict
-			# chat.send(f"Assertion Error: {json.loads(e)['details'][0]['message']}")          # print the message
+			# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
+			chat.send(f"Assertion Error msg --> {json.loads(e)['details'][0]['message']}")          # print the message
 		except EosDeadlineException:
 			chat.send(f'Transaction timed out. Please try again.')
 		except EosRamUsageExceededException:
@@ -195,14 +198,14 @@ def withdrawmemo_command(chat, message, args):
 		# chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}\narg3: {args[3]}", syntax="plain")        # for testing
 		try:
 			# push txn
-		    asyncio.get_event_loop().run_until_complete(withdraw(chat.id, message.sender.username, args[0], args[1] + " " + args[2], args[3]))
+			asyncio.get_event_loop().run_until_complete(withdraw(chat.id, message.sender.username, args[0], args[1] + " " + args[2], args[3], chat))
 
 		except EosAccountDoesntExistException:
 			chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
 			e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
-			chat.send(f"{str(e)}", syntax="plain")      # print full error dict
-			# chat.send(f'Assertion Error: {json.loads(e)['details'][0]['message']}')          # print the message
+			# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
+			chat.send(f'Assertion Error msg --> {json.loads(e)["details"][0]["message"]}')          # print the message
 		except EosDeadlineException:
 			chat.send(f'Transaction timed out. Please try again.')
 		except EosRamUsageExceededException:
@@ -232,14 +235,14 @@ def tip_command(chat, message, args):
 		# chat.send(f"arg0: {args[0]}\narg1: {args[1]}\narg2: {args[2]}\narg3: {args[3]}")        # for testing
 		try:
 			# push txn
-		    asyncio.get_event_loop().run_until_complete(tip(chat.id, args[0], message.sender.username, "optional", args[1] + " " + args[2], args[3]))
+			asyncio.get_event_loop().run_until_complete(tip(chat.id, args[0], message.sender.username, "optional", args[1] + " " + args[2], args[3], chat))
 
 		except EosAccountDoesntExistException:
 			chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
 			e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
-			chat.send(f"{str(e)}", syntax="plain")      # print full error dict
-			# chat.send(f'Assertion Error: {json.loads(e)['details'][0]['message']}')          # print the message
+			# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
+			chat.send(f'Assertion Error msg --> {json.loads(e)["details"][0]["message"]}')          # print the message
 		except EosDeadlineException:
 			chat.send(f'Transaction timed out. Please try again.')
 		except EosRamUsageExceededException:
