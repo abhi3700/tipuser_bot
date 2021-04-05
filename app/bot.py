@@ -24,44 +24,43 @@ bot.owner = "@abhi3700"
 # define Redis database
 # r = redis.from_url(REDIS_URL)
 
+# ===================================================UTILITY func========================================================
+# '''
+# 	Validate JSON response
+# '''
+# def validate(j, chat):
+#     try:
+#         return json.load(j) # put JSON-data to a variable
+#     except json.decoder.JSONDecodeError:
+#         # print("Invalid JSON") # in case json is invalid
+#         chat.send(f"Invalid JSON. Please contact the Bot owner {bot.owner} with the error message.") # in case json is invalid
+#     # else:
+#     #     print("Valid JSON") # in case json is valid
+
 # ===================================================func for show balance========================================================
 async def balance(
-		from_id,
-		chat
-	):
-	rpc = EosJsonRpc(url=Chain_URL)
-	table = await rpc.get_table_by_scope(
-							code=tip_eosio_ac, 
-							table=tip_table, 
-							lower_bound= from_id, 
-							upper_bound= from_id
-						)
-
-	# transaction = EosTransaction(
-	#   ref_block_num=block['block_num'] & 65535,
-	#   ref_block_prefix=block['ref_block_prefix'],
-	#   actions=[action]
-	# )
-
-	# response = await rpc.sign_and_push_transaction(
-	#   transaction, keys=[contract_account.key]
-	# )
-	# # chat.send(f'{response}')             # print the full response after SUCCESS
-	
-	# response = str(response).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
-	# print(response)               # print the full response after replacing single with double quotes
-	'''
-		Here, as the response o/p is not a valid JSON giving error like this:
-		Error:
-			Parse error on line 1:
-			...producer_block_id": None, "receipt": {"s
-			-----------------------^
-			Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'
-
-		So, capture txn_id by char no. i.e. {"transaction_id": "14e310c6e296560202ec808139d7e1b06901616f35b5c4a36ee0a4f065ec72a6"
-	'''
-	chat.send(table, syntax= 'plain')
-	# chat.send(f"\nView the transaction here: https://bloks.io/transaction/{response[20:84]}") if chain_type== "eos-mainnet" else chat.send(f"\nView the transaction here: https://{chain_name}.bloks.io/transaction/{response[20:84]}")          # print the txn_id for successful transaction
+        from_id,
+        chat
+    ):
+    rpc = EosJsonRpc(url=Chain_URL)
+    table_response = await rpc.get_table_rows(
+                            code=tip_eosio_ac,
+                            scope= tip_eosio_ac, 
+                            table=tip_table, 
+                            lower_bound= from_id, 
+                            upper_bound= from_id
+                        )
+    
+    table_response = str(table_response).replace("\'", "\"")
+    table_response = table_response.replace("False", "false")       # As False is invalid in JSON, so replace with false
+    # print(table_response)
+    
+    for r in json.loads(table_response)['rows'][0]["balances"]:
+        prec, sym_name = r["key"]["sym"].split(",")
+        # print(f'token precision: {prec}')                 		# precision
+        # print(f'token sym_name: {sym_name}')              		# symbol name
+        # print(f'val: {r["value"]/10**int(prec)}\n\n')     		# exact value
+        chat.send(f'{r["value"]/10**int(prec)} {sym_name}\n')     	# result e.g. 2.0 EOS
 
 # ===================================================func for withdraw & withdrawmemo ACTION========================================================
 async def withdraw(
