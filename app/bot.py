@@ -24,6 +24,45 @@ bot.owner = "@abhi3700"
 # define Redis database
 # r = redis.from_url(REDIS_URL)
 
+# ===================================================func for show balance========================================================
+async def balance(
+		from_id,
+		chat
+	):
+	rpc = EosJsonRpc(url=Chain_URL)
+	table = await rpc.get_table_by_scope(
+							code=tip_eosio_ac, 
+							table=tip_table, 
+							lower_bound= from_id, 
+							upper_bound= from_id
+						)
+
+	# transaction = EosTransaction(
+	#   ref_block_num=block['block_num'] & 65535,
+	#   ref_block_prefix=block['ref_block_prefix'],
+	#   actions=[action]
+	# )
+
+	# response = await rpc.sign_and_push_transaction(
+	#   transaction, keys=[contract_account.key]
+	# )
+	# # chat.send(f'{response}')             # print the full response after SUCCESS
+	
+	# response = str(response).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
+	# print(response)               # print the full response after replacing single with double quotes
+	'''
+		Here, as the response o/p is not a valid JSON giving error like this:
+		Error:
+			Parse error on line 1:
+			...producer_block_id": None, "receipt": {"s
+			-----------------------^
+			Expecting 'STRING', 'NUMBER', 'NULL', 'TRUE', 'FALSE', '{', '[', got 'undefined'
+
+		So, capture txn_id by char no. i.e. {"transaction_id": "14e310c6e296560202ec808139d7e1b06901616f35b5c4a36ee0a4f065ec72a6"
+	'''
+	chat.send(table, syntax= 'plain')
+	# chat.send(f"\nView the transaction here: https://bloks.io/transaction/{response[20:84]}") if chain_type== "eos-mainnet" else chat.send(f"\nView the transaction here: https://{chain_name}.bloks.io/transaction/{response[20:84]}")          # print the txn_id for successful transaction
+
 # ===================================================func for withdraw & withdrawmemo ACTION========================================================
 async def withdraw(
 		from_id,
@@ -136,6 +175,23 @@ async def tip(
 	'''
 	chat.send(f"\nView the transaction here: https://bloks.io/transaction/{response[20:84]}") if chain_type== "eos-mainnet" else chat.send(f"\nView the transaction here: https://{chain_name}.bloks.io/transaction/{response[20:84]}")          # print the txn_id for successful transaction
 
+
+# ===================================================command: /balance===========================================================================
+@bot.command("balance")
+def balance_command(chat, message, args):
+	"""Show your token balance"""
+	try:
+		# push txn
+		asyncio.get_event_loop().run_until_complete(balance(chat.id, chat))
+
+	except EosAccountDoesntExistException:
+		chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
+	except EosAssertMessageException as e:
+		e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
+		# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
+		chat.send(f"Assertion Error msg --> {json.loads(e)['details'][0]['message']}")          # print the message
+	except EosDeadlineException:
+		chat.send(f'Transaction timed out. Please try again.')
 
 # ===================================================command: /deposit===========================================================================
 @bot.command("deposit")

@@ -11,6 +11,7 @@ chain_type = 'eos-testnet'
 tip_eosio_ac = 'tippertipper'
 tip_ac_private_key = '5KUbt8wFoadvmCc1zu3Q2VgKNKBxWKNyJYnmpBb4W3AVp5EDx6s'
 tip_ac_key_perm = 'active'
+tip_table = 'accounts'
 
 # ACTION
 tip_action = 'tip'
