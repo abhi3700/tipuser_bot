@@ -232,7 +232,8 @@ def withdraw_command(chat, message, args):
 			chat.send(f'Not enough EOS were staked for NET. Please contact the Bot owner {bot.owner}.');
 
 	else:
-		chat.send("Please enter withdrawal request in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL \n(e.g. /withdraw tipuser11111 1.0000 EOS)")
+		chat.send("Please enter withdrawal request in this format: /withdraw ACCOUNT AMOUNT SYMBOL e.g.", syntax="plain")
+		chat.send("/withdraw tipuser11111 1.0000 EOS")
 
 # ===================================================command: /withdrawmemo===========================================================================
 @bot.command("withdrawmemo")
@@ -269,7 +270,8 @@ def withdrawmemo_command(chat, message, args):
 		except EosTxNetUsageExceededException:
 			chat.send(f'Not enough EOS were staked for NET. Please contact the Bot owner {bot.owner}.');
 	else:
-		chat.send("Please enter withdrawal request (with memo) in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL MEMO \n(e.g. /withdrawmemo tipuser11111 1.0000 EOS pay_bill)", syntax="plain")
+		chat.send("Please enter withdrawal request (with memo) in this format: /withdrawmemo ACCOUNT AMOUNT SYMBOL MEMO e.g.", syntax="plain") 
+		chat.send("/withdrawmemo tipuser11111 1.0000 EOS pay_bill)", syntax="plain")
 
 # ===================================================command: /tip===========================================================================
 @bot.command("tip")
@@ -306,7 +308,8 @@ def tip_command(chat, message, args):
 		except EosTxNetUsageExceededException:
 			chat.send(f'Not enough EOS were staked for NET. Please contact the Bot owner {bot.owner}.');
 	else:
-		chat.send("Please enter tip request (with memo) in this format: /tip RECEIVER_ID AMOUNT SYMBOL MEMO \n(e.g. /tip 768743431 0.1000 EOS restaurant_tip_for_excellent_service)", syntax="plain")
+		chat.send("Please enter tip request (with memo) in this format: /tip RECEIVER_ID AMOUNT SYMBOL MEMO e.g.", syntax="plain")
+		chat.send("/tip 768743431 0.1000 EOS restaurant_tip_for_excellent_service)", syntax="plain")
 
 
 # ================================================MAIN===========================================================================
