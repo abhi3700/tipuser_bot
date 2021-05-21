@@ -38,30 +38,32 @@ bot.owner = "@abhi3700"
 #     # else:
 #     #     print("Valid JSON") # in case json is valid
 
+# ===================================================UTILITY func========================================================
+
 # ===================================================func for show balance========================================================
 async def balance(
-        from_id,
-        chat
-    ):
-    rpc = EosJsonRpc(url=Chain_URL)
-    table_response = await rpc.get_table_rows(
-                            code=tip_eosio_ac,
-                            scope= tip_eosio_ac, 
-                            table=tip_table, 
-                            lower_bound= from_id, 
-                            upper_bound= from_id
-                        )
-    
-    table_response = str(table_response).replace("\'", "\"")
-    table_response = table_response.replace("False", "false")       # As False is invalid in JSON, so replace with false
-    # print(table_response)
-    
-    for r in json.loads(table_response)['rows'][0]["balances"]:
-        prec, sym_name = r["key"]["sym"].split(",")
-        # print(f'token precision: {prec}')                 		# precision
-        # print(f'token sym_name: {sym_name}')              		# symbol name
-        # print(f'val: {r["value"]/10**int(prec)}\n\n')     		# exact value
-        chat.send(f'{r["value"]/10**int(prec)} {sym_name}\n')     	# result e.g. 2.0 EOS
+		from_id,
+		chat
+	):
+	rpc = EosJsonRpc(url=Chain_URL)
+	table_response = await rpc.get_table_rows(
+							code=tip_eosio_ac,
+							scope= tip_eosio_ac, 
+							table=tip_table, 
+							lower_bound= from_id, 
+							upper_bound= from_id
+						)
+	
+	table_response = str(table_response).replace("\'", "\"")
+	table_response = table_response.replace("False", "false")       # As False is invalid in JSON, so replace with false
+	# print(table_response)
+	
+	for r in json.loads(table_response)['rows'][0]["balances"]:
+		prec, sym_name = r["key"]["sym"].split(",")
+		# print(f'token precision: {prec}')                 		# precision
+		# print(f'token sym_name: {sym_name}')              		# symbol name
+		# print(f'val: {r["value"]/10**int(prec)}\n\n')     		# exact value
+		chat.send(f'{r["value"]/10**int(prec)} {sym_name}\n')     	# result e.g. 2.0 EOS
 
 # ===================================================func for withdraw & withdrawmemo ACTION========================================================
 async def withdraw(
@@ -186,18 +188,20 @@ def balance_command(chat, message, args):
 
 	except EosRpcException as e:
 		e = str(e).replace("\'", "\"")
-		# what_idx = e.find('what')
-		exp_idx = e.find('Invalid name')
-		# if what_idx != -1 and name_idx != -1:
-		if exp_idx != -1:
-			# print(e[exp_idx:(exp_idx+12)])
-			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
-		else:
-			# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-			chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-
-		# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
-		# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
+		code_idx = e.find('code')
+		code_val = int(e[code_idx+7:(code_idx+14)])
+		# print(code_idx)
+		# print(code_val)
+		# print(type(code_val))
+		if code_idx != -1:			# found "code" key
+			if code_val == 3010001:						# Case-1: invalid name
+				chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
+			elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
+				chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+			else:
+				chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+		else:						# NOT found "code" key
+			chat.send("Sorry! No code no. is present in the error. Please contact the Bot owner {bot.owner}.")
 	except EosAccountDoesntExistException:
 		chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 	except EosAssertMessageException as e:
@@ -233,18 +237,20 @@ def withdraw_command(chat, message, args):
 
 		except EosRpcException as e:
 			e = str(e).replace("\'", "\"")
-			# what_idx = e.find('what')
-			exp_idx = e.find('Invalid name')
-			# if what_idx != -1 and name_idx != -1:
-			if exp_idx != -1:
-				# print(e[exp_idx:(exp_idx+12)])
-				chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
-			else:
-				# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-				chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-
-			# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
-			# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
+			code_idx = e.find('code')
+			code_val = int(e[code_idx+7:(code_idx+14)])
+			# print(code_idx)
+			# print(code_val)
+			# print(type(code_val))
+			if code_idx != -1:			# found "code" key
+				if code_val == 3010001:						# Case-1: invalid name
+					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
+				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
+					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+				else:
+					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+			else:						# NOT found "code" key
+				chat.send("Sorry! No code no. is present in the error. Please contact the Bot owner {bot.owner}.")
 		except EosAccountDoesntExistException:
 			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
@@ -286,18 +292,20 @@ def withdrawmemo_command(chat, message, args):
 
 		except EosRpcException as e:
 			e = str(e).replace("\'", "\"")
-			# what_idx = e.find('what')
-			exp_idx = e.find('Invalid name')
-			# if what_idx != -1 and name_idx != -1:
-			if exp_idx != -1:
-				# print(e[exp_idx:(exp_idx+12)])
-				chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
-			else:
-				# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-				chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-
-			# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
-			# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
+			code_idx = e.find('code')
+			code_val = int(e[code_idx+7:(code_idx+14)])
+			# print(code_idx)
+			# print(code_val)
+			# print(type(code_val))
+			if code_idx != -1:			# found "code" key
+				if code_val == 3010001:						# Case-1: invalid name
+					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
+				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
+					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+				else:
+					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+			else:						# NOT found "code" key
+				chat.send("Sorry! No code no. is present in the error. Please contact the Bot owner {bot.owner}.")
 		except EosAccountDoesntExistException:
 			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
@@ -338,18 +346,20 @@ def tip_command(chat, message, args):
 
 		except EosRpcException as e:
 			e = str(e).replace("\'", "\"")
-			# what_idx = e.find('what')
-			exp_idx = e.find('Invalid name')
-			# if what_idx != -1 and name_idx != -1:
-			if exp_idx != -1:
-				# print(e[exp_idx:(exp_idx+12)])
-				chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
-			else:
-				# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-				chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
-
-			# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
-			# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
+			code_idx = e.find('code')
+			code_val = int(e[code_idx+7:(code_idx+14)])
+			# print(code_idx)
+			# print(code_val)
+			# print(type(code_val))
+			if code_idx != -1:			# found "code" key
+				if code_val == 3010001:						# Case-1: invalid name
+					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
+				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
+					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+				else:
+					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+			else:						# NOT found "code" key
+				chat.send("Sorry! No code no. is present in the error. Please contact the Bot owner {bot.owner}.")
 		except EosAccountDoesntExistException:
 			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
