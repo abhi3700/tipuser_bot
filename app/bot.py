@@ -6,6 +6,7 @@ import asyncio
 from aioeos import EosAccount, EosJsonRpc, EosTransaction
 from aioeos import types
 
+from aioeos.exceptions import EosRpcException
 from aioeos.exceptions import EosAccountDoesntExistException
 from aioeos.exceptions import EosAssertMessageException
 from aioeos.exceptions import EosDeadlineException
@@ -183,8 +184,22 @@ def balance_command(chat, message, args):
 		# push txn
 		asyncio.get_event_loop().run_until_complete(balance(chat.id, chat))
 
+	except EosRpcException as e:
+		e = str(e).replace("\'", "\"")
+		# what_idx = e.find('what')
+		exp_idx = e.find('Invalid name')
+		# if what_idx != -1 and name_idx != -1:
+		if exp_idx != -1:
+			# print(e[exp_idx:(exp_idx+12)])
+			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
+		else:
+			# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+			chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+
+		# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
+		# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
 	except EosAccountDoesntExistException:
-		chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
+		chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 	except EosAssertMessageException as e:
 		e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
 		# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
@@ -216,8 +231,22 @@ def withdraw_command(chat, message, args):
 			# push txn
 			asyncio.get_event_loop().run_until_complete(withdraw(chat.id, message.sender.username, args[0], args[1] + " " + args[2], "", chat))
 
+		except EosRpcException as e:
+			e = str(e).replace("\'", "\"")
+			# what_idx = e.find('what')
+			exp_idx = e.find('Invalid name')
+			# if what_idx != -1 and name_idx != -1:
+			if exp_idx != -1:
+				# print(e[exp_idx:(exp_idx+12)])
+				chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
+			else:
+				# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+				chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+
+			# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
+			# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
 		except EosAccountDoesntExistException:
-			chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
+			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
 			e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
 			# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
@@ -255,8 +284,22 @@ def withdrawmemo_command(chat, message, args):
 			# push txn
 			asyncio.get_event_loop().run_until_complete(withdraw(chat.id, message.sender.username, args[0], args[1] + " " + args[2], args[3], chat))
 
+		except EosRpcException as e:
+			e = str(e).replace("\'", "\"")
+			# what_idx = e.find('what')
+			exp_idx = e.find('Invalid name')
+			# if what_idx != -1 and name_idx != -1:
+			if exp_idx != -1:
+				# print(e[exp_idx:(exp_idx+12)])
+				chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
+			else:
+				# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+				chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+
+			# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
+			# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
 		except EosAccountDoesntExistException:
-			chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
+			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
 			e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
 			# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
@@ -293,8 +336,22 @@ def tip_command(chat, message, args):
 			# push txn
 			asyncio.get_event_loop().run_until_complete(tip(chat.id, args[0], message.sender.username, "optional", args[1] + " " + args[2], args[3], chat))
 
+		except EosRpcException as e:
+			e = str(e).replace("\'", "\"")
+			# what_idx = e.find('what')
+			exp_idx = e.find('Invalid name')
+			# if what_idx != -1 and name_idx != -1:
+			if exp_idx != -1:
+				# print(e[exp_idx:(exp_idx+12)])
+				chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
+			else:
+				# print("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+				chat.send("Some other Exception occured. Please contact the Bot owner {bot.owner}.")
+
+			# chat.send(f"Assertion Error msg --> {json.loads(str(e))['what']}")          # print the message
+			# chat.send(f"Assertion Error msg -->{str(e)}")          # print the message
 		except EosAccountDoesntExistException:
-			chat.send(f'Your EOSIO account doesn\'t exist on this chain.')
+			chat.send(f'Your EOSIO account name doesn\'t exist on this chain.')
 		except EosAssertMessageException as e:
 			e = str(e).replace("\'", "\"")            # replace single quotes (') with double quotes (") to make it as valid JSON & then extract the 'message' value.
 			# chat.send(f"{str(e)}", syntax="plain")      # print full error dict
