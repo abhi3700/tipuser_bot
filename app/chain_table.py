@@ -1,3 +1,30 @@
+'''
+    This is to fetch the tip table data for a telegram_id
+
+Error Handling
+==============
+- /withdrawmemo tipuser11111 0.0001 TLOS pay_bill
+- /withdrawmemo tipuser11111 0.00001 EOS pay_bill
+{"code": 3050003, "name": "eosio_assert_message_exception", "what": "eosio_assert_message assertion failure"
+, "details": [{"message": "assertion failure with message: there is no balances available corresponding to t
+he parsed quantity symbol for the given from_id.", "file": "cf_system.cpp", "line_number": 14, "method": "eo
+sio_assert"}, {"message": "pending console output: ", "file": "apply_context.cpp", "line_number": 143, "meth
+od": "exec_one"}]} 
+
+- /withdrawmemo tipuser11117 0.0001 EOS pay_bill
+{"code": 3010001, "name": "name_type_exception", "what": "Invalid name", "details": [{"message": "Name conta
+ins invalid character: (7) ", "file": "name.hpp", "line_number": 26, "method": "char_to_symbol"}, {"message"
+: "", "file": "abi_serializer.cpp", "line_number": 570, "method": "_variant_to_binary"}, {"message": "", "fi
+le": "abi_serializer.cpp", "line_number": 570, "method": "_variant_to_binary"}, {"message": "", "file": "abi
+_serializer.cpp", "line_number": 584, "method": "_variant_to_binary"}, {"message": "\"{"from_id":410894301,"
+from_username":"abhi3700","to_ac":"tipuser11117","quantity":"0.0001 EOS","memo":"pay_bill"}\" is invalid arg
+s for action \"withdraw\" code \"tippertipper\". expected \"[{"name":"from_id","type":"uint64"},{"name":"fro
+m_username","type":"string"},{"name":"to_ac","type":"name"},{"name":"quantity","type":"asset"},{"name":"memo
+","type":"string"}]\"", "file": "chain_plugin.cpp", "line_number": 3396, "method": "abi_json_to_bin"}, {"mes
+sage": "code: tippertipper, action: withdraw, args: {"from_id":410894301,"from_username":"abhi3700","to_ac":
+"tipuser11117","quantity":"0.0001 EOS","memo":"pay_bill"}", "file": "chain_plugin.cpp", "line_number": 3402,
+ "method": "abi_json_to_bin"}]}
+'''
 import json
 
 import asyncio

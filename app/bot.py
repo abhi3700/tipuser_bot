@@ -246,7 +246,7 @@ def withdraw_command(chat, message, args):
 				if code_val == 3010001:						# Case-1: invalid name
 					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
 				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
-					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity symbol pair on this chain.")
 				else:
 					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
 			else:						# NOT found "code" key
@@ -301,7 +301,7 @@ def withdrawmemo_command(chat, message, args):
 				if code_val == 3010001:						# Case-1: invalid name
 					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
 				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
-					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity symbol pair on this chain.")
 				else:
 					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
 			else:						# NOT found "code" key
@@ -355,7 +355,7 @@ def tip_command(chat, message, args):
 				if code_val == 3010001:						# Case-1: invalid name
 					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
 				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
-					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity symbol pair on this chain.")
 				else:
 					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
 			else:						# NOT found "code" key
