@@ -198,6 +198,8 @@ def balance_command(chat, message, args):
 				chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
 			elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
 				chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity or symbol on this chain.")
+			elif code_val == 3080004:
+				chat.send("Sorry! The contract account \'tippertipper\' doesn\'t have enough CPU to handle this activity on this chain. Please contact the Bot owner {bot.owner}.")
 			else:
 				chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
 		else:						# NOT found "code" key
@@ -247,6 +249,8 @@ def withdraw_command(chat, message, args):
 					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
 				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
 					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity symbol pair on this chain.")
+				elif code_val == 3080004:
+					chat.send("Sorry! The contract account \'tippertipper\' doesn\'t have enough CPU to handle this activity on this chain. Please contact the Bot owner {bot.owner}.")
 				else:
 					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
 			else:						# NOT found "code" key
@@ -302,6 +306,8 @@ def withdrawmemo_command(chat, message, args):
 					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
 				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
 					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity symbol pair on this chain.")
+				elif code_val == 3080004:
+					chat.send("Sorry! The contract account \'tippertipper\' doesn\'t have enough CPU to handle this activity on this chain. Please contact the Bot owner {bot.owner}.")
 				else:
 					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
 			else:						# NOT found "code" key
@@ -356,6 +362,8 @@ def tip_command(chat, message, args):
 					chat.send("Sorry! Your EOSIO account name doesn\'t exist on this chain.")
 				elif code_val == 3050003:					# Case-1: incorrect quantity or symbol
 					chat.send("Sorry! Your EOSIO account doesn\'t have any balances corresponding to parsed quantity symbol pair on this chain.")
+				elif code_val == 3080004:
+					chat.send("Sorry! The contract account \'tippertipper\' doesn\'t have enough CPU to handle this activity on this chain. Please contact the Bot owner {bot.owner}.")
 				else:
 					chat.send("Sorry! Some other Exception occured. Please contact the Bot owner {bot.owner}.")
 			else:						# NOT found "code" key
