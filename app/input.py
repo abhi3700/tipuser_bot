@@ -4,7 +4,7 @@ API_key = "1741811496:AAFkvltDTovbRtxNPE1oZEIM2qNPJmKBmWw"
 REDIS_URL = 'redis://:p66ce263b0d5ff1cb309cac27f09d077fb0a14c5d37ace401b82d02dbea514c15@ec2-108-128-25-66.eu-west-1.compute.amazonaws.com:25430'
 
 Chain_URL = 'http://jungle3.cryptolions.io:80'      # Jungle Testnet
-chain_name = 'jungle'
+chain_name = 'jungle3'
 chain_type = 'eos-testnet'
 
 # tippertipper eosio_ac
