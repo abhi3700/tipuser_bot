@@ -1,7 +1,14 @@
-API_key = "1741811496:AAFkvltDTovbRtxNPE1oZEIM2qNPJmKBmWw"
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  #  take environment variables from .env.
+
+# -------------------------------------------------------------------------------
+API_KEY = str(os.getenv('API_KEY'))
 
 # Capture using `$ heroku config | grep REDIS` from the terminal at App's root dir
-REDIS_URL = 'redis://:p66ce263b0d5ff1cb309cac27f09d077fb0a14c5d37ace401b82d02dbea514c15@ec2-108-128-25-66.eu-west-1.compute.amazonaws.com:25430'
+# Capture using `$ heroku redis:credentials REDIS_URL -a kyctelbot` from the terminal
+REDIS_URL = str(os.getenv('REDIS_URL'))
 
 Chain_URL = 'http://jungle3.cryptolions.io:80'      # Jungle Testnet
 chain_name = 'jungle3'
@@ -9,7 +16,7 @@ chain_type = 'eos-testnet'
 
 # tippertipper eosio_ac
 tip_eosio_ac = 'tippertipper'
-tip_ac_private_key = '5KUbt8wFoadvmCc1zu3Q2VgKNKBxWKNyJYnmpBb4W3AVp5EDx6s'
+tip_ac_private_key = str(os.getenv('TIP_AC_PRIVATE_KEY'))
 tip_ac_key_perm = 'active'
 tip_table = 'accounts'
 
